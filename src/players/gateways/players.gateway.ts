@@ -8,11 +8,10 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { CreatePlayerDto } from '../dto/create-player.dto';
-import { UpdatePlayerDto } from '../dto/update-player.dto';
-import { PlayersService } from '../services/players.service';
+import { CreatePlayerDto, UpdatePlayerDto } from '../dto/input';
+import { PlayersService } from '../services';
 
-@WebSocketGateway()
+@WebSocketGateway({ namespace: '/players' })
 export class PlayersGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
@@ -24,12 +23,10 @@ export class PlayersGateway
 
   handleConnection(client: Socket) {
     this.logger.log(`Client Connected id: ${client.id}`);
-    this.logger.log(`Client Connected: ${JSON.stringify(client)}`);
   }
 
   handleDisconnect(client: Socket) {
     this.logger.log(`Client Disconnected id: ${client.id}`);
-    this.logger.log(`Client Disconnected: $${JSON.stringify(client)}`);
   }
 
   @SubscribeMessage('create_player')
@@ -54,7 +51,7 @@ export class PlayersGateway
     const allPlayers = await this.playersService.findAll();
 
     try {
-      this.logger.log(`all_players_found: `, allPlayers);
+      this.logger.log(`all_players_found: `, JSON.stringify(allPlayers));
       this.server.emit('all_players_found', allPlayers);
     } catch (error) {
       this.logger.log(`find_all_players_error: ${JSON.stringify(error)}`);
@@ -68,7 +65,7 @@ export class PlayersGateway
 
     try {
       const playerFound = await this.playersService.findOne(id);
-      this.logger.log(`one_player_found: `, playerFound);
+      this.logger.log(`one_player_found: `, JSON.stringify(playerFound));
       this.server.emit('one_player_found', playerFound);
     } catch (error) {
       this.logger.log(`find_one_player_error: ${JSON.stringify(error)}`);

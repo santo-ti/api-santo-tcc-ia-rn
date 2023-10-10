@@ -11,13 +11,17 @@ export class Player {
   constructor(
     name: string,
     playerIndex: PlayerIndexEnum,
-    kalahIndex: KalahIndexEnum,
     id: string = uuidv4(),
   ) {
     this.id = id;
     this.name = name;
     this.playerIndex = playerIndex;
-    this.kalahIndex = kalahIndex;
+    this.kalahIndex = this.getKalahIndex();
     Object.freeze(this);
+  }
+
+  private getKalahIndex(): KalahIndexEnum {
+    if (this.playerIndex === PlayerIndexEnum.FIRST) return KalahIndexEnum.FIRST;
+    return KalahIndexEnum.LAST;
   }
 }

@@ -1,6 +1,5 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import { KalahIndexEnum } from '../enums/kalah-index.enum';
-import { PlayerIndexEnum } from '../enums/player-index.enum';
+import { PlayerIndexEnum } from '../../enums/player-index.enum';
 
 export class CreatePlayerDto {
   @IsString()
@@ -9,7 +8,4 @@ export class CreatePlayerDto {
 
   @IsNotEmpty()
   readonly playerIndex: PlayerIndexEnum;
-
-  @IsNotEmpty()
-  readonly kalahIndex: KalahIndexEnum;
 }

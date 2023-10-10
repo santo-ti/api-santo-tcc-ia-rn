@@ -1,4 +1,4 @@
 export enum PlayerIndexEnum {
-  PlayerNorth = 1,
-  PlayerSouth = 2,
+  FIRST = 1,
+  LAST = 2,
 }
